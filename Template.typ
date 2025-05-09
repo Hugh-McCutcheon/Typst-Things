@@ -1,4 +1,4 @@
-#import "../header.typ": * 
+#import "header.typ": * 
 #show: setup.with(
   title: "",
   sub-title: "",
