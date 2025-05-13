@@ -79,7 +79,7 @@
       Email: #email\
       ID: #ID
       #h(1fr)
-      Name: #name
+      Name: #eval(name, mode: "markup")
       
       ]
       },
