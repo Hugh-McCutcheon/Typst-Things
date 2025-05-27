@@ -1,3 +1,5 @@
+// #let headingArray = ()
+#let s = state("x", (0,))
 #let cheatSheet(
   title: "",
   blackNWhite: false,
@@ -17,7 +19,6 @@
 
   let mine = counter("my counter")
   mine.update(())
-  let s = state("head", [])
 
   let countArray = (0,)
 
@@ -60,17 +61,28 @@
     // #mine.update(1)
     #rect([#it.body ], width:100%,fill: red, radius: .5em)
   ]
+
+  let arrayManage(hArray, index, newItem) = {
+    if hArray != none{
+    if hArray.at(index, default:-1) == -1 {
+      hArray.push(newItem)
+    } else {
+    hArray.remove(index)
+    hArray.insert(index, newItem)
+    }
+    return hArray
+  }}
+
   show heading.where(level: 2): it => [
     #rect(it.body, width:100% -2em,fill: red, radius: .5em)
-
-    count before: #context countArray
-
-    #let countArray = increaseCount(counter(heading).get(), countArray)
-    // #counter(heading).get()
-    count after: #countArray
-
-    // #let headCount = counter(heading).get()
-    // #count.at(headCount.at(0)) = #headCount.at(1)
+    // #countArray
+    // #let headingArray = s.get()
+    #let vars = counter(heading).get()
+    vars: #vars
+    before: #s.get()
+    function:#s.update(arrayManage(s.get(), vars.at(0)- 1, vars.at(1)+1))
+    after: #s.get()
+    // #context s.update(headingArray)
   ]
   doc
   
