@@ -82,6 +82,7 @@
     before: #s.get()
     function:#s.update(arrayManage(s.get(), vars.at(0)- 1, vars.at(1)+1))
     after: #s.get()
+    #s.final()
     // #context s.update(headingArray)
   ]
   doc
