@@ -1,5 +1,5 @@
 // #let headingArray = ()
-#let s = state("x", (0,))
+#let s = state("x", (1,))
 #let cheatSheet(
   title: "",
   blackNWhite: false,
@@ -57,34 +57,75 @@
   let findColour(test) = {
     mine.final()
   }
-  show heading.where(level: 1): it => [
-    // #mine.update(1)
-    #rect([#it.body ], width:100%,fill: red, radius: .5em)
-  ]
-
-  let arrayManage(hArray, index, newItem) = {
-    if hArray != none{
-    if hArray.at(index, default:-1) == -1 {
-      hArray.push(newItem)
-    } else {
-    hArray.remove(index)
-    hArray.insert(index, newItem)
-    }
-    return hArray
-  }}
-
-  show heading.where(level: 2): it => [
-    #rect(it.body, width:100% -2em,fill: red, radius: .5em)
-    // #countArray
-    // #let headingArray = s.get()
-    #let vars = counter(heading).get()
-    vars: #vars
-    before: #s.get()
-    function:#s.update(arrayManage(s.get(), vars.at(0)- 1, vars.at(1)+1))
-    after: #s.get()
-    #s.final()
-    // #context s.update(headingArray)
-  ]
-  doc
+let heading_summary_data = state("heading_summary_data", ())
+  // Show rule for Level 1 headings
+show heading.where(level: 1): it => {
+  // Append a new entry for this H1 heading.
+  // 'it.body' captures the content of the heading.
+  heading_summary_data.update(arr => arr + ((title: it.body, h2_count: 0),))
   
+  // Display the heading as usual
+  it
+}
+
+// Show rule for Level 2 headings
+show heading.where(level: 2): it => {
+  heading_summary_data.update(arr => {
+    // Check if there's at least one H1 heading processed.
+    // This ensures we only count H2s that are under an H1.
+    if arr.len() > 0 {
+      // Get the last H1 entry (the one we are currently under).
+      // .pop() removes and returns the last element.
+      let last_h1_entry = arr.pop() 
+      
+      // Increment its H2 count.
+      let updated_h1_entry = (
+        title: last_h1_entry.title, 
+        h2_count: last_h1_entry.h2_count + 1
+      )
+      
+      // Add the updated entry back to the array.
+      // .push() appends an element to the end.
+      arr.push(updated_h1_entry)
+    }
+    // If no H1 has been encountered yet, this H2 is not counted
+    // under any specific H1 by this logic.
+    return arr
+  })
+  
+  // Display the heading as usual
+  it
+}
+
+// Function to display the summary of H2 counts per H1 heading
+let display_heading_summary() = {
+  // Retrieve the final state value after the document has been processed.
+  context[#let summary = heading_summary_data.final()
+
+  #if summary.len() == 0 {
+    [No level 1 headings found in the document.]
+  } else {
+    // You can style this summary section as needed.
+    block(stroke: 1pt + blue, inset: 8pt, radius: 4pt)[
+      #set text(blue.darken(30%))
+      #strong[Summary of Level 2 Headings per Level 1 Heading]
+      #v(1em) // Vertical spacing
+
+      #for item in summary {
+        // Display the title of the H1 heading.
+        // Using 'block' ensures the heading content is displayed correctly.
+        block[#strong[#item.title]]
+        // Display the count of H2 headings.
+        pad(left: 1em)[Number of level 2 headings: #item.h2_count]
+        v(0.5em) // Vertical spacing between entries
+      }
+    ]
+  }
+]}
+  doc
+  context[
+    #heading_summary_data.get()
+    // #heading_summary_data.at()
+    ]
+  display_heading_summary()
 }
