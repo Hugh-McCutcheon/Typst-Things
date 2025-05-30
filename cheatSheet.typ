@@ -35,11 +35,12 @@
       }
       return arr
     })
+    //Heading 2 Body
     it
   }
   doc
   context[
-    #let counts_array = heading_summary_data.final()
+    \ #let counts_array = heading_summary_data.final()
     #counts_array
   ]
 }
