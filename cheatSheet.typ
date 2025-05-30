@@ -57,10 +57,21 @@
       return arr
     })
     // colour management
-    context[
-      #let counts_array = heading_summary_data.final()
-      // #rect(text(fill:white)[#it.body], width:100% -2em,fill: red, radius: .5em)
-    ]
+    let h_sum = heading_summary_data.final()
+    let parent_num = (counter(heading).get().at(0))
+    let parent_hue = hues.at(calc.rem(parent_num, hues.len())-1)
+    let next_parent_hue = hues.at(calc.rem(parent_num+1, hues.len())-1)
+    let cur_colour_band = next_parent_hue - parent_hue
+    
+    let header_num = counter(heading).get().at(1)
+    // let hue = parent_hue
+    if h_sum.at(parent_num -1) != 0 {
+      let hue = parent_hue+((cur_colour_band/h_sum.at(parent_num -1)*header_num))
+      let colour = color.hsv(hue, saturation, lightness)
+      // [hue #hue parent hue#parent_hue next parent hue#next_parent_hue cur colour band #cur_colour_band, header_num #header_num parent num #parent_num #h_sum.at(parent_num -1)]
+      rect(text(fill:white)[#it.body], width:100% -2em,fill: colour, radius: .5em)
+    } 
+    // [#h_sum.at(parent_num -1)]
     //Heading 2 Body
   }
   doc
