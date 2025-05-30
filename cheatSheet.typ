@@ -27,9 +27,19 @@
   let lightness = 90%
 
   let heading_summary_data = state("heading_summary_data", ())
+  let cur_h1 = state("cur_h1", (
+    hue: hues.first(),
+  ))
+  let h1_cycle = state("h1_cycle", 0)
 
   show heading.where(level: 1): it => {
     heading_summary_data.update(arr => arr + (0,))
+    let h1_cur_cycle = h1_cycle.get() // convergence here
+    h1_cycle.update(v => rm((v + 1), hues.len())) // convergence problem here
+
+
+
+
     rect(text(fill:white)[#it.body], width:100%,fill: red, radius: .5em)
   }
 
@@ -47,10 +57,9 @@
     // colour management
     context[
       #let counts_array = heading_summary_data.final()
-      
+      #rect(text(fill:white)[#it.body], width:100% -2em,fill: red, radius: .5em)
     ]
     //Heading 2 Body
-    rect(text(fill:white)[#it.body], width:100% -2em,fill: red, radius: .5em)
   }
   doc
   context[
