@@ -1,5 +1,4 @@
 // #let headingArray = ()
-#let s = state("x", (0,))
 #let cheatSheet(
   title: "",
   blackNWhite: false,
@@ -9,82 +8,91 @@
   set page(
     paper: "a4",
     margin:(
-      6.34mm
-    )
+      // 6.34mm // this is average printer margins
+      0.1em // for feeling sexy
+    ),
+  columns: 3,
+  flipped: false
   )
   set heading(
-    numbering: "1.a.I"
+    numbering: "1.a.I",
+  )
+  // show heading: it => {
+
+  // }
+
+  set table(inset:3pt)
+  set columns(gutter:0.1em)
+  set text(
+    size: 7.5pt
+  )
+  set image(
+    width: 80%,
   )
 
+  set rect(inset: 0.2em)
+  let hues = (
+    0deg, // red
+    40deg, // orng
+    90deg, // grn
+    180deg, // purp
+    240deg,
+    270deg,
+    300deg,
+  )
+  let saturation = 60%
+  let lightness = 90%
 
-  let mine = counter("my counter")
-  mine.update(())
+  let heading_summary_data = state("heading_summary_data", ())
+  let cur_h1 = state("cur_h1", (
+    hue: hues.first(),
+  ))
+  // let h1_cycle = state("h1_cycle", 0)
 
-  let countArray = (0,)
+  show heading.where(level: 1): it => {
+    heading_summary_data.update(arr => arr + (0,)) // count up the header 1s
 
-  let countUp(part) = {
-    // let array = (0,0,0)
-    let parent = part.at(0)
-    // mine.at(0)
-    [#parent]
-    [#mine.get()]
-    if mine.get() == none{
-      [nononene]
-    } else {
-      [something]
-    }
-    [\ test: #part : #mine.get()]
-    mine.update(part)
+    let header_num = counter(heading).get().at(0)
+    let hue = hues.at(calc.rem(header_num, hues.len())-1)
+    let colour = color.hsv(hue, saturation, lightness)
+
+
+    block(inset:0em,below: 0em, above: 0em)[#rect(text(fill:white)[#it.body], width:100%,fill: colour, radius: .5em)]
   }
-  let increaseCount(headerNum, array) = {
-    let parent = headerNum.at(0) -1
-    let child = headerNum.at(1)
-    // [#parent #child]
-    let newCount = array
-    if(newCount.at(parent, default: -1) == 0) { // change the value at a position
-      newCount.pop()
-      newCount.push(child)
-      // count.at(headerNum.at(0), default: 0)
-    } else { // add a new value to the thingy
 
-      // newCount.push(12)  
-      newCount.push(child)  
+  show heading.where(level: 2): it => {
+    heading_summary_data.update(arr => {
+      if arr.len() > 0 {
+        let last_h1_entry = arr.pop() 
+        let updated_h1_entry = (
+          last_h1_entry + 1
+        )
+        arr.push(updated_h1_entry)
+      }
+      return arr
+    })
+    let bod = (text(fill: white)[#it.body])
+    // colour management
+    let h_sum = heading_summary_data.final()
+    let parent_num = (counter(heading).get().at(0))
+    let parent_hue = hues.at(calc.rem(parent_num, hues.len())-1)
+    let next_parent_hue = hues.at(calc.rem(parent_num+1, hues.len())-1)
+    let cur_colour_band = next_parent_hue - parent_hue
+    
+    let header_num = counter(heading).get().at(1)
+    // let hue = parent_hue
+    if h_sum.at(parent_num -1) > 1 {
+      let hue = parent_hue+((cur_colour_band/h_sum.at(parent_num -1)*header_num))
+      let colour = color.hsv(hue, saturation, lightness)
+      // [hue #hue parent hue#parent_hue next parent hue#next_parent_hue cur colour band #cur_colour_band, header_num #header_num parent num #parent_num #h_sum.at(parent_num -1)]
+      block(below: 0.1em, above: 0.1em)[#rect(bod, width:100% -5em,fill: colour, radius: .5em)]
+    } else  if h_sum.at(parent_num -1) != 0 {
+      let hue = parent_hue+((cur_colour_band/3))
+      let colour = color.hsv(hue, saturation, lightness)
+      block(below: 0em, above: 0em)[#rect(bod, width:100% -5em,fill: colour, radius: .5em)]
+
     }
-    return (newCount)
-    // return(parent, child)
-    // return(newCount.at(parent, default: -1))
   }
-  let findColour(test) = {
-    mine.final()
-  }
-  show heading.where(level: 1): it => [
-    // #mine.update(1)
-    #rect([#it.body ], width:100%,fill: red, radius: .5em)
-  ]
 
-  let arrayManage(hArray, index, newItem) = {
-    if hArray != none{
-    if hArray.at(index, default:-1) == -1 {
-      hArray.push(newItem)
-    } else {
-    hArray.remove(index)
-    hArray.insert(index, newItem)
-    }
-    return hArray
-  }}
-
-  show heading.where(level: 2): it => [
-    #rect(it.body, width:100% -2em,fill: red, radius: .5em)
-    // #countArray
-    // #let headingArray = s.get()
-    #let vars = counter(heading).get()
-    vars: #vars
-    before: #s.get()
-    function:#s.update(arrayManage(s.get(), vars.at(0)- 1, vars.at(1)+1))
-    after: #s.get()
-    #s.final()
-    // #context s.update(headingArray)
-  ]
   doc
-  
 }
