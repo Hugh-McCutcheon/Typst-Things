@@ -30,17 +30,18 @@
   let cur_h1 = state("cur_h1", (
     hue: hues.first(),
   ))
-  let h1_cycle = state("h1_cycle", 0)
+  // let h1_cycle = state("h1_cycle", 0)
 
   show heading.where(level: 1): it => {
-    heading_summary_data.update(arr => arr + (0,))
-    let h1_cur_cycle = h1_cycle.get() // convergence here
-    h1_cycle.update(v => rm((v + 1), hues.len())) // convergence problem here
+    heading_summary_data.update(arr => arr + (0,)) // count up the header 1s
+
+    let header_num = counter(heading).get().at(0)
+    let hue = hues.at(calc.rem(header_num, hues.len())-1)
+    [#hue]
+    let colour = color.hsl(hue, saturation, lightness)
 
 
-
-
-    rect(text(fill:white)[#it.body], width:100%,fill: red, radius: .5em)
+    // rect(text(fill:white)[#it.body], width:100%,fill: red, radius: .5em)
   }
 
   show heading.where(level: 2): it => {
