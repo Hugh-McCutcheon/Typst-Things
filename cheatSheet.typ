@@ -8,13 +8,29 @@
   set page(
     paper: "a4",
     margin:(
-      6.34mm
-    )
+      // 6.34mm // this is average printer margins
+      0.1em // for feeling sexy
+    ),
+  columns: 3,
+  flipped: false
   )
   set heading(
-    numbering: "1.a.I"
+    numbering: "1.a.I",
+  )
+  // show heading: it => {
+
+  // }
+
+  set table(inset:3pt)
+  set columns(gutter:0.1em)
+  set text(
+    size: 7.5pt
+  )
+  set image(
+    width: 80%,
   )
 
+  set rect(inset: 0.2em)
   let hues = (
     0deg, // red
     40deg, // orng
@@ -38,11 +54,10 @@
 
     let header_num = counter(heading).get().at(0)
     let hue = hues.at(calc.rem(header_num, hues.len())-1)
-    [#hue]
     let colour = color.hsv(hue, saturation, lightness)
 
 
-    rect(text(fill:white)[#it.body], width:100%,fill: colour, radius: .5em)
+    block(inset:0em,below: 0em, above: 0em)[#rect(text(fill:white)[#it.body], width:100%,fill: colour, radius: .5em)]
   }
 
   show heading.where(level: 2): it => {
@@ -56,6 +71,7 @@
       }
       return arr
     })
+    let bod = (text(fill: white)[#it.body])
     // colour management
     let h_sum = heading_summary_data.final()
     let parent_num = (counter(heading).get().at(0))
@@ -65,24 +81,18 @@
     
     let header_num = counter(heading).get().at(1)
     // let hue = parent_hue
-    if h_sum.at(parent_num -1) != 0 {
+    if h_sum.at(parent_num -1) > 1 {
       let hue = parent_hue+((cur_colour_band/h_sum.at(parent_num -1)*header_num))
       let colour = color.hsv(hue, saturation, lightness)
       // [hue #hue parent hue#parent_hue next parent hue#next_parent_hue cur colour band #cur_colour_band, header_num #header_num parent num #parent_num #h_sum.at(parent_num -1)]
-      rect(text(fill:white)[#it.body], width:100% -2em,fill: colour, radius: .5em)
-    } 
-    // [#h_sum.at(parent_num -1)]
-    //Heading 2 Body
-  }
-  doc
-  context[
-    \ #let counts_array = heading_summary_data.final()
-    #counts_array
-  ]
+      block(below: 0.1em, above: 0.1em)[#rect(bod, width:100% -5em,fill: colour, radius: .5em)]
+    } else  if h_sum.at(parent_num -1) != 0 {
+      let hue = parent_hue+((cur_colour_band/3))
+      let colour = color.hsv(hue, saturation, lightness)
+      block(below: 0em, above: 0em)[#rect(bod, width:100% -5em,fill: colour, radius: .5em)]
 
-  let i = 0
-  for value in hues {
-    place(left,dy: 2.7em*i,square(fill:color.hsv(value, saturation, lightness, 100%)))
-    i+=1
+    }
   }
+
+  doc
 }
