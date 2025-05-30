@@ -17,11 +17,12 @@
 
   let hues = (
     0deg, // red
-    60deg, // orng
-    120deg, // yeller
-    180deg, // grn
-    240deg, // bloo
-    300deg, // purp
+    40deg, // orng
+    90deg, // grn
+    180deg, // purp
+    240deg,
+    270deg,
+    300deg,
   )
   let saturation = 60%
   let lightness = 90%
@@ -38,10 +39,10 @@
     let header_num = counter(heading).get().at(0)
     let hue = hues.at(calc.rem(header_num, hues.len())-1)
     [#hue]
-    let colour = color.hsl(hue, saturation, lightness)
+    let colour = color.hsv(hue, saturation, lightness)
 
 
-    // rect(text(fill:white)[#it.body], width:100%,fill: red, radius: .5em)
+    rect(text(fill:white)[#it.body], width:100%,fill: colour, radius: .5em)
   }
 
   show heading.where(level: 2): it => {
@@ -58,7 +59,7 @@
     // colour management
     context[
       #let counts_array = heading_summary_data.final()
-      #rect(text(fill:white)[#it.body], width:100% -2em,fill: red, radius: .5em)
+      // #rect(text(fill:white)[#it.body], width:100% -2em,fill: red, radius: .5em)
     ]
     //Heading 2 Body
   }
