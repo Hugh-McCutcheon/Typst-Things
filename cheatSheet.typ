@@ -86,11 +86,11 @@
       let hue = parent_hue+((cur_colour_band/h_sum.at(parent_num -1)*header_num))
       let colour = color.hsv(hue, saturation, lightness)
       // [hue #hue parent hue#parent_hue next parent hue#next_parent_hue cur colour band #cur_colour_band, header_num #header_num parent num #parent_num #h_sum.at(parent_num -1)]
-      block(below: 0.05em, above: 0.1em)[#rect(bod, width:100% -5em,fill: colour, radius: .5em)]
+      align(center, block(below: 0.05em, above: 0.1em)[#rect(bod, width:100% -5em,fill: colour, radius: .5em)])
     } else  if h_sum.at(parent_num -1) != 0 {
       let hue = parent_hue+((cur_colour_band/1.5))
       let colour = color.hsv(hue, saturation, lightness)
-      block(below: 0.05em, above: 0.1em)[#rect(bod, width:100% -5em,fill: colour, radius: .5em)]
+      align(center, block(below: 0.05em, above: 0.1em)[#rect(bod, width:100% -5em,fill: colour, radius: .5em)])
 
     }
   }
