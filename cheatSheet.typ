@@ -57,7 +57,7 @@
     let colour = color.hsv(hue, saturation, lightness)
 
 
-    block(inset:0em,below: 0em, above: 0em)[#rect(text(fill:white)[#it.body], width:100%,fill: colour, radius: .5em)]
+    align(center, block(inset:0em,below: 0em, above: 0em)[#rect(text(fill:white, stroke: 0.2pt + black)[#it.body], width:100%,fill: colour, radius: .5em)])
   }
 
   show heading.where(level: 2): it => {
@@ -71,25 +71,26 @@
       }
       return arr
     })
-    let bod = (text(fill: white)[#it.body])
+    let bod = align(center,text(fill: white, stroke: 0.2pt + black)[#it.body])
     // colour management
     let h_sum = heading_summary_data.final()
     let parent_num = (counter(heading).get().at(0))
     let parent_hue = hues.at(calc.rem(parent_num, hues.len())-1)
     let next_parent_hue = hues.at(calc.rem(parent_num+1, hues.len())-1)
     let cur_colour_band = next_parent_hue - parent_hue
-    
+    if cur_colour_band == -300deg {cur_colour_band = 60deg}
+
     let header_num = counter(heading).get().at(1)
     // let hue = parent_hue
     if h_sum.at(parent_num -1) > 1 {
       let hue = parent_hue+((cur_colour_band/h_sum.at(parent_num -1)*header_num))
       let colour = color.hsv(hue, saturation, lightness)
       // [hue #hue parent hue#parent_hue next parent hue#next_parent_hue cur colour band #cur_colour_band, header_num #header_num parent num #parent_num #h_sum.at(parent_num -1)]
-      block(below: 0.1em, above: 0.1em)[#rect(bod, width:100% -5em,fill: colour, radius: .5em)]
+      block(below: 0.05em, above: 0.1em)[#rect(bod, width:100% -5em,fill: colour, radius: .5em)]
     } else  if h_sum.at(parent_num -1) != 0 {
-      let hue = parent_hue+((cur_colour_band/3))
+      let hue = parent_hue+((cur_colour_band/1.5))
       let colour = color.hsv(hue, saturation, lightness)
-      block(below: 0em, above: 0em)[#rect(bod, width:100% -5em,fill: colour, radius: .5em)]
+      block(below: 0.05em, above: 0.1em)[#rect(bod, width:100% -5em,fill: colour, radius: .5em)]
 
     }
   }
