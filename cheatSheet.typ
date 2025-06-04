@@ -14,6 +14,8 @@
   columns: 3,
   flipped: false
   )
+
+  set terms(separator:[:#h(0.6em, weak:true)])
   set heading(
     numbering: "1.a.I",
   )
@@ -21,6 +23,7 @@
 
   // }
 
+show table.cell.where(y:0): set text(style: "normal", weight: "bold")
   set table(inset:3pt)
   set columns(gutter:0.1em)
   set text(
@@ -56,7 +59,7 @@
     let hue = hues.at(calc.rem(header_num, hues.len())-1)
     let colour = color.hsv(hue, saturation, lightness)
 
-
+    show math.equation: set text(fill: white, stroke: 0.2pt + black)
     align(center, block(inset:0em,below: 0em, above: 0em)[#rect(text(fill:white, stroke: 0.2pt + black)[#it.body], width:100%,fill: colour, radius: .5em)])
   }
 
@@ -71,6 +74,7 @@
       }
       return arr
     })
+    show math.equation: set text(fill: white, stroke: 0.2pt + black)
     let bod = align(center,text(fill: white, stroke: 0.2pt + black)[#it.body])
     // colour management
     let h_sum = heading_summary_data.final()
@@ -86,11 +90,11 @@
       let hue = parent_hue+((cur_colour_band/h_sum.at(parent_num -1)*header_num))
       let colour = color.hsv(hue, saturation, lightness)
       // [hue #hue parent hue#parent_hue next parent hue#next_parent_hue cur colour band #cur_colour_band, header_num #header_num parent num #parent_num #h_sum.at(parent_num -1)]
-      align(center, block(below: 0.05em, above: 0.1em)[#rect(bod, width:100% -5em,fill: colour, radius: .5em)])
+      align(center, block(below: 0.05em, above: 0.1em)[#rect(bod, width:100% -4em,fill: colour, radius: .5em)])
     } else  if h_sum.at(parent_num -1) != 0 {
       let hue = parent_hue+((cur_colour_band/1.5))
       let colour = color.hsv(hue, saturation, lightness)
-      align(center, block(below: 0.05em, above: 0.1em)[#rect(bod, width:100% -5em,fill: colour, radius: .5em)])
+      align(center, block(below: 0.05em, above: 0.1em)[#rect(bod, width:100% -4em,fill: colour, radius: .5em)])
 
     }
   }
