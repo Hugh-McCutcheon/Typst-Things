@@ -73,7 +73,9 @@
   set page(
     paper: "a4",
     header: {
-      [
+      block[
+      #set par(first-line-indent:0em)
+      #set text(black)
       #title
       #h(1fr)
       Email: #email\
