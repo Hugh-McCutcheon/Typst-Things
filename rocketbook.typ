@@ -3,7 +3,7 @@
 
 #set page(margin: 1em, fill: black, paper: "a4", columns: 1, flipped: true)
 #set circle(inset: 0pt)
-#let num_dots = 32
+#let num_dots = 30
 #let page_width = layout(size => {
   let width = size.width
   [#(width)]
@@ -31,26 +31,26 @@
   
   )
 ]
-#let main_page() = {
+#let pnum = counter("pnum")
+#let main_page(num) = {
  context block(width: 100%, height: 100%)[#place(rect(fill:white, width: 100%, height: 100%)[
-  #let num = calc.rem(int(counter(page).get().at(0)),2)
   #if(num == 0){
     place(rect(fill:dotting, width: 100%, height: 100%)[])
     place(bottom + center,rect(width:100%, height: 3em, fill:white))
-    place(bottom + center,dx:2pt,rect(width:100%-9.5em, height: 3em, fill:white)[#align(center+horizon)[#bottom_line]#place(center+horizon,dx:22em,text(luma(80%), size:13pt)[#counter(page).get().at(0)])])
+    place(bottom + center,dx:2pt,rect(width:100%-9.5em, height: 3em, fill:white)[#align(center+horizon)[#bottom_line]#place(center+horizon,dx:14.4em,text(luma(80%), size:13pt)[#num])])
     place(bottom,qr-code("P01 V0I S0000000", width: 3.5em))
   } else {
     place(rect(fill:dotting, width: 100%, height: 100%)[])
     place(bottom + center,rect(width:100%, height: 3em, fill:white))
-    place(bottom + center,dx:-2pt,rect(width:100%-9.5em, height: 3em, fill:white)[#align(center+horizon)[#bottom_line]#place(center+horizon,dx:-22em,text(luma(80%), size:13pt)[#counter(page).get().at(0)])])
+    place(bottom + center,dx:-2pt,rect(width:100%-9.5em, height: 3em, fill:white)[#align(center+horizon)[#bottom_line]#place(center+horizon,dx:-14.4em,text(luma(80%), size:13pt)[#num])])
     place(right+bottom,qr-code("P01 V0I S0000000", width: 3.5em))
   }
   ])
  ]
 }
 #bookletic.sig(
-  page-margin-binding: 1em,
-  draft: true,
+  page-margin-binding: 2em,
+  draft: false,
   p-num-layout: (
     bookletic.num-layout(
       p-num-start: 1,
@@ -61,7 +61,9 @@
     ),
   ),
   contents: (
-    4*([#main_page()],)
+    for i in range(1,17){
+    ([#main_page(i)],)
+    }
   ),
 )
 // #place(top+left,image("Image (3).png"))
