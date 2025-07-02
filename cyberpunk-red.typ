@@ -14,41 +14,27 @@
   set text(font: "lexend")
 set heading(numbering: "1.a")
 
-show heading.where(level: 1): it => block(width:100%)[
-  // #rect(width: 100%, fill: colour)
+show heading.where(level: 1): it => block[
   #let headFirst = upper(it.body.text.first())
   #let headRest = upper(it.body.text.slice(1))
-  #let placeHeadFirst = text(3em)[#headFirst]
-  // #text(red)[#headFirst]#headRest
-  // #rect(width: 100%, fill: colour, inset:0pt)[#headRest#v(0pt)#rect(width:100%, fill:green, inset: 0pt,height: 1em)[#place(bottom, placeHeadFirst)]]
-  // #layout(size=>{
-  //   let size = size.width
-  // [#grid(columns: (auto,1fr), column-gutter: 0pt, inset: 0pt,
-  // grid.cell(rowspan: 2)[#placeHeadFirst],[#headRest],[#align(bottom)[#place(top+left,dx:-2.5em,rect(width:size)[9])]])]})
-  #block()[
-  #grid(columns: (auto,1fr), column-gutter: 0pt, inset: 0pt,
-  grid.cell(rowspan: 2)[#placeHeadFirst],[#headRest],
-  [
-    #let hWidth = measure(placeHeadFirst)
-    #place(right+horizon,rect(fill:colour, width: 100%+hWidth.width)[#text("")])
-    #align(right,rect(width:1.2em,fill: black)[""])
-  ])
-  
-  #place(top+left,grid(columns: (auto,1fr), column-gutter: 0pt, inset: 0pt,
-  grid.cell()[#(placeHeadFirst)],[#headRest]))
-  ]
+  #let hpl = text(size:55pt)[#headFirst]
+  #grid(rows:(1em, 1.5em), columns:(auto, 1fr),[#place(hpl)#hpl],[#text(size:1.4em,headRest)],grid.cell(colspan:2,fill:colour,[#align(right,square(fill:black))]))
 ]
 
 show heading.where(level: 2): it => block[
-  #set align(left)
-  #set text(size:14pt, weight: "regular")
-  #(it.body)
+  #let headFirst = upper(it.body.text.first())
+  #let headRest = upper(it.body.text.slice(1))
+  #block()[#text(size:20pt,headFirst)#text(size:15pt, headRest)
+  #v(4pt, weak:true)
+  #line(length:100%, stroke:colour+3pt)
+  #place(bottom+right,dy:5pt,square(width:10pt,fill:colour))
+  ]
 ]
-show heading.where(level: 3): it => block[
-  #set align(left)
-  #set text(size:12.5pt, weight: "regular", fill: rgb(colourC))
-  #emph(it.body)
-  // #v(.65em, weak: true)
+show heading.where(level: 3): it => block(width:100%)[
+  #let tri = polygon.regular(fill:colour, size:1.5em)
+  #align(center,block(height:2em)[#box(rotate(-30deg,tri))
+  #h(.25em)#text(size:14pt,it.body)#h(.25em)
+  #box(rotate(30deg,tri))])
 ]
 show outline.entry.where(
   level: 1
@@ -56,7 +42,8 @@ show outline.entry.where(
 set list(indent: 1em, marker: ([•],[∘]))
 set enum(indent: 1em, numbering: "1.a.")
 set par(
-  // justify: true,
+  justify: true,
+  first-line-indent: 1em
 )
 set terms(separator: [:#h(0.6em, weak:true)])
 show math.equation: set text(font:"Cambria Math")
