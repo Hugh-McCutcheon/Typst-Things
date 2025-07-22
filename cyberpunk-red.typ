@@ -46,8 +46,27 @@ set par(
   first-line-indent: 1em
 )
 set terms(separator: [:#h(0.6em, weak:true)])
-show math.equation: set text(font:"Cambria Math")
-show table.cell.where(y:0): set text(style: "normal", weight: "bold")
+
+set table(
+  stroke: (x,y) => (top: if y <= 1 {colour+3pt} else {0pt},
+  bottom: colour+3pt, left:colour+3pt,  right:colour+3pt),
+  fill: (_, y)=>
+  if y == 0{
+    colour
+  } else if calc.rem(y, 2) == 0 {
+    colour.lighten(80%)
+  },
+  align:center
+)
+show table.cell: it => {
+  if it.y==0{
+    set text(white)
+    
+    it
+  } else {
+    it
+  }
+}
 // show regex("(?m)^[^\\[]"): set text(red)
 doc
 }
