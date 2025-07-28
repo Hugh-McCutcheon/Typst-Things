@@ -1,8 +1,8 @@
-#import "@preview/fletcher:0.5.7" as fletcher: diagram, node, edge
-#import fletcher.shapes
+// #import "@preview/fletcher:0.5.7" as fletcher: diagram, node, edge
+// #import fletcher.shapes
 
-#import "@preview/cetz:0.3.4": canvas, draw, tree
-#import draw: *
+// #import "@preview/cetz:0.3.4": canvas, draw, tree
+// #import draw: *
 
 #import "@preview/callisto:0.2.2"
 
@@ -73,7 +73,9 @@
   set page(
     paper: "a4",
     header: {
-      [
+      block[
+      #set par(first-line-indent:0em)
+      #set text(black)
       #title
       #h(1fr)
       Email: #email\
@@ -100,19 +102,19 @@ show heading.where(level: 1): it => block(width:100%)[
   #set align(center)
   #set text(size:16pt,weight: "regular", fill: rgb(colourA))
   \~ #(smallcaps(it.body)) \~]
-show heading.where(level: 2): it => [
+show heading.where(level: 2): it => block[
   #set align(left)
   #set text(size:14pt, weight: "regular", fill: rgb(colourB))
   #set par(first-line-indent: 0em)
   #(it.body)
-  #v(.65em, weak: true)
+  // #v(.65em, weak: true)
 ]
-show heading.where(level: 3): it => [
+show heading.where(level: 3): it => block[
   #set align(left)
   #set text(size:12.5pt, weight: "regular", fill: rgb(colourC))
   #set par(first-line-indent: 0em)
   #emph(it.body)
-  #v(.65em, weak: true)
+  // #v(.65em, weak: true)
 ]
 show outline.entry.where(
   level: 1
@@ -121,7 +123,7 @@ set list(indent: 1em, marker: ([•],[∘]))
 set enum(indent: 1em, numbering: "1.a.")
 set par(
   justify: true,
-  first-line-indent: 1em,
+  first-line-indent: (amount: 1em, all: true),
 )
 set terms(separator: [:#h(0.6em, weak:true)])
 show math.equation: set text(font:"Cambria Math")
