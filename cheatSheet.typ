@@ -9,9 +9,9 @@
     paper: "a4",
     margin:(
       // 6.34mm // this is average printer margins
-      0.1em // for feeling sexy
+      0.5em // for feeling sexy
     ),
-  columns: 3,
+  // columns: 3,
   flipped: false
   )
 
@@ -27,13 +27,15 @@ show table.cell.where(y:0): set text(style: "normal", weight: "bold")
   set table(inset:3pt)
   set columns(gutter:0.1em)
   set text(
-    size: 7.5pt
+    // size: 7.5pt
+    // size: 11pt
+    size: 10pt
   )
   set image(
     width: 80%,
   )
 
-  set rect(inset: 0.2em)
+  set rect(inset: 0.3em)
   let hues = (
     0deg, // red
     40deg, // orng
@@ -51,7 +53,7 @@ show table.cell.where(y:0): set text(style: "normal", weight: "bold")
     hue: hues.first(),
   ))
   // let h1_cycle = state("h1_cycle", 0)
-
+  let blockSett = (inset:0.5em, below:0.01em, above:0.01em)
   show heading.where(level: 1): it => {
     heading_summary_data.update(arr => arr + (0,)) // count up the header 1s
 
@@ -60,7 +62,7 @@ show table.cell.where(y:0): set text(style: "normal", weight: "bold")
     let colour = color.hsv(hue, saturation, lightness)
 
     show math.equation: set text(fill: white, stroke: 0.2pt + black)
-    align(center, block(inset:0em,below: 0em, above: 0em)[#rect(text(fill:white, stroke: 0.2pt + black)[#it.body], width:100%,fill: colour, radius: .5em)])
+    align(left, block(inset:blockSett.inset, below:blockSett.below, above: blockSett.above)[#rect(text(fill:white, stroke: 0.5pt + black)[#it.body], width:100%,fill: colour, radius: .5em)])
   }
 
   show heading.where(level: 2): it => {
@@ -75,7 +77,7 @@ show table.cell.where(y:0): set text(style: "normal", weight: "bold")
       return arr
     })
     show math.equation: set text(fill: white, stroke: 0.2pt + black)
-    let bod = align(center,text(fill: white, stroke: 0.2pt + black)[#it.body])
+    let bod = align(left,text(fill: white, stroke: 0.5pt + black)[#it.body])
     // colour management
     let h_sum = heading_summary_data.final()
     let parent_num = (counter(heading).get().at(0))
@@ -90,11 +92,11 @@ show table.cell.where(y:0): set text(style: "normal", weight: "bold")
       let hue = parent_hue+((cur_colour_band/h_sum.at(parent_num -1)*header_num))
       let colour = color.hsv(hue, saturation, lightness)
       // [hue #hue parent hue#parent_hue next parent hue#next_parent_hue cur colour band #cur_colour_band, header_num #header_num parent num #parent_num #h_sum.at(parent_num -1)]
-      align(center, block(below: 0.05em, above: 0.1em)[#rect(bod, width:100% -4em,fill: colour, radius: .5em)])
+      align(left, block(inset:blockSett.inset, below:blockSett.below, above: blockSett.above)[#rect(bod, width:100% -4em,fill: colour, radius: .5em)])
     } else  if h_sum.at(parent_num -1) != 0 {
       let hue = parent_hue+((cur_colour_band/1.5))
       let colour = color.hsv(hue, saturation, lightness)
-      align(center, block(below: 0.05em, above: 0.1em)[#rect(bod, width:100% -4em,fill: colour, radius: .5em)])
+      align(left, block(inset:blockSett.inset, below:blockSett.below, above: blockSett.above)[#rect(bod, width:100% -4em,fill: colour, radius: .5em)])
 
     }
   }
