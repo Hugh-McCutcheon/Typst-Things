@@ -4,7 +4,7 @@
 // #import "@preview/cetz:0.3.4": canvas, draw, tree
 // #import draw: *
 
-#import "@preview/callisto:0.2.2"
+#import "@preview/callisto:0.2.2" // Allows for reading of Jupyter notebook files 
 
 #let vars = json("vars.json")
 #let setup(
@@ -97,25 +97,46 @@ if table-of-contents{
   outline(title: "Table of Contents")
   pagebreak()
 }
-set heading(numbering: "1.a")
+// start of heading style definitions
+// set heading(numbering: "1.a")
+set heading(numbering: "1.A.I.*")
+
 show heading.where(level: 1): it => block(width:100%)[
+  // #set align(center)
+  #set text(size:20pt,weight: "semibold")
+  #box(smallcaps(it.body))
+  #h(1fr)
+  #counter(heading).display(it.numbering)
+  #v(0.25em,weak: true)
+  #line(length: 100%)
+  ]
+
+show heading.where(level: 2): it => block(width:100%)[
   #set align(center)
   #set text(size:16pt,weight: "regular", fill: rgb(colourA))
-  \~ #(smallcaps(it.body)) \~]
-show heading.where(level: 2): it => block[
+  #block(width:100%)[ #place(right,counter(heading).display(it.numbering))\~ #box(smallcaps(it.body)) \~ ] 
+  
+  ]
+
+show heading.where(level: 3): it => block[
   #set align(left)
   #set text(size:14pt, weight: "regular", fill: rgb(colourB))
   #set par(first-line-indent: 0em)
   #(it.body)
+  #h(1fr)
+  #counter(heading).display(it.numbering)
   // #v(.65em, weak: true)
 ]
-show heading.where(level: 3): it => block[
+show heading.where(level: 4): it => block[
   #set align(left)
   #set text(size:12.5pt, weight: "regular", fill: rgb(colourC))
   #set par(first-line-indent: 0em)
   #emph(it.body)
+  #h(1fr)
+  #counter(heading).display(it.numbering)
   // #v(.65em, weak: true)
 ]
+// end of heading style definitions
 show outline.entry.where(
   level: 1
 ): set block(above: 1.2em)
@@ -123,10 +144,23 @@ set list(indent: 1em, marker: ([•],[∘]))
 set enum(indent: 1em, numbering: "1.a.")
 set par(
   justify: true,
-  first-line-indent: (amount: 1em, all: true),
+  first-line-indent: (amount: 1em, all: false),
 )
 set terms(separator: [:#h(0.6em, weak:true)])
 show math.equation: set text(font:"Cambria Math")
 show table.cell.where(y:0): set text(style: "normal", weight: "bold")
+
+
+
 doc
 }
+#let frame(
+  title: none,
+  sub-title: none,
+  doc
+) = [
+  #box(width:95%)[
+    // #par(hanging-indent: 1em, first-line-indent: (amount: 1em,all: true))[#doc]
+    #doc
+  ]
+]

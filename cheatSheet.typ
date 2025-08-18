@@ -11,7 +11,7 @@
       // 6.34mm // this is average printer margins
       0.5em // for feeling sexy
     ),
-  // columns: 3,
+  columns: 1,
   flipped: false
   )
 
