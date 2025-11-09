@@ -9,9 +9,10 @@
     paper: "a4",
     margin:(
       // 6.34mm // this is average printer margins
-      0.5em // for feeling sexy
+      // 1.5em // for feeling sexy
+      .5em
     ),
-  columns: 1,
+  columns: 2,
   flipped: false
   )
 
@@ -23,6 +24,7 @@
 
   // }
 
+set list(indent: .1em, marker: ([#sym.circle.filled],[#sym.circle.stroked],[#sym.circle.dotted]))
 show table.cell.where(y:0): set text(style: "normal", weight: "bold")
   set table(inset:3pt)
   set columns(gutter:0.1em)
@@ -53,7 +55,7 @@ show table.cell.where(y:0): set text(style: "normal", weight: "bold")
     hue: hues.first(),
   ))
   // let h1_cycle = state("h1_cycle", 0)
-  let blockSett = (inset:0.5em, below:0.01em, above:0.01em)
+  let blockSett = (inset:0.0em, below:0.1em, above:0.2em)
   show heading.where(level: 1): it => {
     heading_summary_data.update(arr => arr + (0,)) // count up the header 1s
 

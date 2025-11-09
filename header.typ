@@ -37,6 +37,7 @@
   let secondary-colour = color.rgb(colourB+"CA")
   let tertiary-colour = color.rgb(colourC+"99")
   //let secondary-colour = color.mix(color.rgb(100%,100%,100%,alpha), primary-colour, space:rgb)
+  // set text(font:"Cambria")
   if title-page == true {
     set page(
     paper: "a4",
@@ -46,10 +47,10 @@
       x: 4em,
     )
   )
-    place(bottom+left, dx: -50%, dy: 40%,circle(radius: 300pt, fill:primary-colour))
+    place(bottom+left, dx: -50%, dy: 43%,circle(radius: 300pt, fill:primary-colour))
     place(bottom + left, dx: 40%, dy: -5%, circle(radius: 150pt, fill:tertiary-colour))
     place(dx:-40%, circle(radius: 150pt, fill:tertiary-colour))
-    place(right,dy:-40% , circle(radius: 300pt, fill: secondary-colour))
+    place(right,dy:-40% , circle(radius: 275pt, fill: secondary-colour))
 
     v(2fr)
     align(center, text(4em, weight: 700, title))
@@ -74,15 +75,18 @@
     paper: "a4",
     header: {
       block[
-      #set par(first-line-indent:0em)
-      #set text(black)
-      #title
-      #h(1fr)
-      Email: #email\
-      ID: #ID
-      #h(1fr)
-      Name: #eval(name, mode: "markup")
-      
+        #set par(
+          first-line-indent:0em,
+          leading: 0.7em,
+          spacing: 0.7em
+        )
+        // #set text(black, font: "")
+        #title
+        #h(1fr)
+        Email: #email\
+        ID: #ID
+        #h(1fr)
+        Name: #eval(name, mode: "markup")
       ]
       },
     numbering: "- 1 of 1 -",
@@ -93,20 +97,23 @@
     )
   )
 
+show outline.entry: set block(above: 0.6em)
 if table-of-contents{
   outline(title: "Table of Contents")
   pagebreak()
 }
 // start of heading style definitions
 // set heading(numbering: "1.a")
-set heading(numbering: "1.A.I.*")
+set heading(numbering: "1.a.I.*")
 
-show heading.where(level: 1): it => block(width:100%)[
+show heading.where(level: 1): it => block(width:100%,breakable:false)[
   // #set align(center)
   #set text(size:20pt,weight: "semibold")
   #box(smallcaps(it.body))
   #h(1fr)
-  #counter(heading).display(it.numbering)
+  #if it.numbering != none [ 
+    #counter(heading).display(it.numbering) 
+  ]
   #v(0.25em,weak: true)
   #line(length: 100%)
   ]
@@ -136,20 +143,19 @@ show heading.where(level: 4): it => block[
   #counter(heading).display(it.numbering)
   // #v(.65em, weak: true)
 ]
+set cite(style: "apa")
 // end of heading style definitions
-show outline.entry.where(
-  level: 1
-): set block(above: 1.2em)
 set list(indent: 1em, marker: ([•],[∘]))
 set enum(indent: 1em, numbering: "1.a.")
 set par(
   justify: true,
-  first-line-indent: (amount: 1em, all: false),
+  first-line-indent: (amount: 1.5em, all: false),
 )
 set terms(separator: [:#h(0.6em, weak:true)])
 show math.equation: set text(font:"Cambria Math")
 show table.cell.where(y:0): set text(style: "normal", weight: "bold")
 
+// show bibliography: set heading(numbering: "1.a")
 
 
 doc
